@@ -53,7 +53,7 @@
             // 
             this.toggleButton1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.toggleButton1.Description = "Track email on Mautic";
-            this.toggleButton1.Image = global::MauticOutlookPlugin.Properties.Resources.mautic_logo;
+            this.toggleButton1.Image = global::MauticOutlookPlugin.Properties.Resources.mauticLogo;
             this.toggleButton1.Label = "Track Email";
             this.toggleButton1.Name = "toggleButton1";
             this.toggleButton1.ShowImage = true;

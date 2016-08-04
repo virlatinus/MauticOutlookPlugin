@@ -19,9 +19,9 @@ namespace MauticOutlookPlugin {
 
         void Outlook.PropertyPage.Apply()
         {
-            if (!Regex.IsMatch(textBox1.Text, @"^http(s)?://([\w-]+.)+[\w-]+/index.php$", RegexOptions.IgnoreCase)) {
+            if (!Regex.IsMatch(mauticUrl.Text, @"^http(s)?://([\w-]+.)+[\w-]+/index.php$", RegexOptions.IgnoreCase)) {
                 MessageBox.Show("The URL does not seem like a valid URL. Please type in a valid URL (ending with index.php)", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                textBox1.Focus();
+                mauticUrl.Focus();
             }
 
             try {
@@ -32,8 +32,10 @@ namespace MauticOutlookPlugin {
                 if (key.OpenSubKey("Outlook Plugin") == null)
                     key.CreateSubKey("Outlook Plugin");
                 key = key.OpenSubKey("Outlook Plugin", true);
-                key.SetValue("Endpoint URL", textBox1.Text);
-                Globals.ThisAddIn.EndpointUrl = textBox1.Text;
+                key.SetValue("Endpoint URL", mauticUrl.Text);
+                key.SetValue("Secret", mauticSecret.Text);
+                Globals.ThisAddIn.EndpointUrl = mauticUrl.Text;
+                Globals.ThisAddIn.MauticSecret = mauticSecret.Text;
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -64,7 +66,7 @@ namespace MauticOutlookPlugin {
 
         private void UserControl1_Load(object sender, EventArgs e) {
             propertyPageSite = GetPropertyPageSite();
-            textBox1.Text = Globals.ThisAddIn.EndpointUrl;
+            mauticUrl.Text = Globals.ThisAddIn.EndpointUrl;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e) {

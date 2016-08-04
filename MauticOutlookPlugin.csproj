@@ -155,6 +155,8 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ArrayPointer.cs" />
+    <Compile Include="Crc32.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -164,6 +166,7 @@
     <Compile Include="PluginOptionsControl.Designer.cs">
       <DependentUpon>PluginOptionsControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UnixCrypt.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -6,11 +6,11 @@ using System.Security;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MauticOutlookPlugin")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Mautic Outlook Plugin")]
+[assembly: AssemblyDescription("Outlook Add-In for email tracking in Mautic")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MauticOutlookPlugin")]
+[assembly: AssemblyProduct("Mautic Outlook Plugin")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

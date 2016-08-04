@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using DamienG.Security.Cryptography;
 using Microsoft.Win32;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using Office = Microsoft.Office.Core;
@@ -31,8 +32,9 @@ namespace MauticOutlookPlugin {
                 key = key.OpenSubKey("Mautic");
                 key = key.OpenSubKey("Outlook Plugin");
                 EndpointUrl = key.GetValue("Endpoint URL").ToString();
+                MauticSecret = key.GetValue("Secret").ToString();
             } catch (Exception ex) {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -61,6 +63,15 @@ namespace MauticOutlookPlugin {
             return acc.SmtpAddress;
         }
 
+        public Stream GenerateStreamFromString(string s) {
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(s);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
+        }
+
         public void Application_ItemSend(object item, ref bool cancel) {
             if (!Trackable) return;
 
@@ -79,7 +90,14 @@ namespace MauticOutlookPlugin {
                 }
 
                 var d = Uri.EscapeDataString(Compress($"from={Uri.EscapeDataString(GetSenderAddress(outlookMailtItem))}&email={Uri.EscapeDataString(a)}&subject={Uri.EscapeDataString(outlookMailtItem.Subject)}&body={Uri.EscapeDataString(outlookMailtItem.Body)}"));
-                var trackingGif = $"<img style=\"display: none;\" height=\"1\" width=\"1\" src=\"{EndpointUrl}/outlook/tracking.gif?d={d}\" alt=\"Mautic is open source marketing automation\">";
+                var crc32 = new Crc32();
+                var hash = String.Empty;
+                var cr = UnixCrypt.crypt(d, MauticSecret);
+                using (var s = GenerateStreamFromString(cr))
+                {
+                    hash = crc32.ComputeHash(s).Aggregate(hash, (current, b) => current + b.ToString("x2").ToLower());
+                }
+                var trackingGif = $"<img style=\"display: none;\" height=\"1\" width=\"1\" src=\"{EndpointUrl}/outlook/tracking.gif?d={d}&sig={hash}\" alt=\"Mautic is open source marketing automation\">";
 
                 outlookMailtItem.HTMLBody = Regex.Replace(outlookMailtItem.HTMLBody, "</body>", trackingGif + "</body>", RegexOptions.IgnoreCase);
             }
@@ -110,6 +128,9 @@ namespace MauticOutlookPlugin {
         #endregion
 
         public string EndpointUrl { get; set; }
+
+        public string MauticSecret { get; set; }
+
         public bool Trackable { get; set; }
     }
 }

@@ -63,9 +63,9 @@ namespace MauticOutlookPlugin.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap mautic_logo {
+        internal static System.Drawing.Bitmap mauticLogo {
             get {
-                object obj = ResourceManager.GetObject("mautic-logo", resourceCulture);
+                object obj = ResourceManager.GetObject("mauticLogo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
