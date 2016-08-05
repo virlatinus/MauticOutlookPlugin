@@ -67,6 +67,7 @@ namespace MauticOutlookPlugin {
         private void UserControl1_Load(object sender, EventArgs e) {
             propertyPageSite = GetPropertyPageSite();
             mauticUrl.Text = Globals.ThisAddIn.EndpointUrl;
+            mauticSecret.Text = Globals.ThisAddIn.MauticSecret;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e) {
