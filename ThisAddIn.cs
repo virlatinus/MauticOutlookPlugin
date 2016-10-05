@@ -97,7 +97,7 @@ namespace MauticOutlookPlugin {
                 {
                     hash = crc32.ComputeHash(s).Aggregate(hash, (current, b) => current + b.ToString("x2").ToLower());
                 }
-                var trackingGif = $"<img style=\"display: none;\" height=\"1\" width=\"1\" src=\"{EndpointUrl}/outlook/tracking.gif?d={d}&sig={hash}\" alt=\"Mautic is open source marketing automation\">";
+                var trackingGif = $"<img style=\"display: none;\" height=\"1\" width=\"1\" src=\"{EndpointUrl}/plugin/Outlook/tracking.gif?d={d}&sig={hash}\" alt=\"Mautic is open source marketing automation\">";
 
                 outlookMailtItem.HTMLBody = Regex.Replace(outlookMailtItem.HTMLBody, "</body>", trackingGif + "</body>", RegexOptions.IgnoreCase);
             }

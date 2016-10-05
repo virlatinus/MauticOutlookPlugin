@@ -19,8 +19,12 @@ namespace MauticOutlookPlugin {
 
         void Outlook.PropertyPage.Apply()
         {
-            if (!Regex.IsMatch(mauticUrl.Text, @"^http(s)?://([\w-]+.)+[\w-]+/index.php$", RegexOptions.IgnoreCase)) {
-                MessageBox.Show("The URL does not seem like a valid URL. Please type in a valid URL (ending with index.php)", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            Uri uriResult;
+            bool result = Uri.TryCreate(mauticUrl.Text, UriKind.Absolute, out uriResult)
+                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+            if (!result) {
+                MessageBox.Show("The URL does not seem like a valid URL. Please type in a valid URL", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 mauticUrl.Focus();
             }
 
@@ -72,7 +76,7 @@ namespace MauticOutlookPlugin {
 
         private void textBox1_TextChanged(object sender, EventArgs e) {
             isDirty = true;
-            propertyPageSite.OnStatusChange();
+            propertyPageSite.OnStatusChange(); // this enables the apply button
         }
 
     }
